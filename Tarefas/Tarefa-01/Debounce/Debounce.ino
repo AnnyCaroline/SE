@@ -33,8 +33,7 @@ void setup() {
 
 void loop() {
   if (digitalRead(BTN_DESACELERAR)){
-
-    Serial.println("clicou");
+    delay(5);
     
     // AUMENTAR TEMPO ENTRE MUDANÇA DE ESTADO DO LED
     timeRange += timeRange <= maxInt - dt ? dt : 0;
@@ -55,7 +54,7 @@ void loop() {
   }
   
   if (digitalRead(BTN_ACELERAR)){
-
+    delay(5);
     // DIMINUI TEMPO ENTRE MUDANÇA DE ESTADO DO LED
     timeRange -= (timeRange >= dt) ? dt : 0;
 
@@ -79,7 +78,6 @@ void loop() {
     if (segundoClique - primeiroClique <= 500){
       // O TEMPO DE CLIQUE ENTRE OS DOIS BOTÕES FOI MENOR, OU IGUAL, A 500ms => O LED É ACESSO E A O PROGRAMA FICA PRESO NO LOOP WHILE(1)
       digitalWrite(LED_BUILTIN, HIGH);
-      Serial.println("fim");
       while(1);
     }else{
       // O TEMPO DE CLIQUE ENTRE OS DOIS BOTÕES FOI MAIOR QUE 500ms, ENTÃO OS CLIQUES SÃO DESCONSIDERADO (ISTO É, CONSIDERA-SE QUE NENHUM BOTÃO FOI CLICADO)
