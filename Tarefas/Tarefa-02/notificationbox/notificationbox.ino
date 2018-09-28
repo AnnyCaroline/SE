@@ -11,26 +11,27 @@
 
 #define TOUCH_SENSOR 12
 
+#define MAX_NOTI 4
+#define NOTI_STR_LENGTH   10
 
 struct noti{
   boolean has_notification = false;
-  char str[10];
+  char str[NOTI_STR_LENGTH];
   int r = 0;
   int g = 0;
   int b = 0; 
   int cont = 0;
 };
 struct noti noti_temp;
-struct noti notificacoes[4];
-int noti_i      = 0; // 0,1,2,3
-
+struct noti notificacoes[MAX_NOTI];
+int noti_i = 0;
+boolean has_notification;
 
 unsigned long momentoAtual;
 unsigned long momentoAnterior;
-int noti_i_loop = 0; // 0,1,2,3
-int timeRange = 1000; // 1s - intervalo de tempo
+int noti_i_loop = 0;
+int timeRange = 1000;
 
-char str[10];
 int str_i = 0;
 char c;
 int r = 0;
@@ -51,42 +52,36 @@ LiquidCrystal_I2C lcd(0x27,2,1,0,4,5,6,7,3, POSITIVE);
 
  
 void setup() {
-  Serial.begin(9600); // Inicializa a serial nativa do Arduino
+  Serial.begin(9600);
   
   pinMode(LED_R,OUTPUT);
   pinMode(LED_G,OUTPUT);
   pinMode(LED_B,OUTPUT);
 
-  pinMode(TOUCH_SENSOR,INPUT);
+  pinMode(TOUCH_SENSOR, INPUT);
   
   analogWrite(LED_R, LOW);
   analogWrite(LED_G, LOW);
   analogWrite(LED_B, LOW);
   
-  bluetooth.begin(9600); // Inicializa a serial via software (Onde está conectado o nosso módulo bluetooth)   
+  bluetooth.begin(9600); // Inicializa a serial via software (Onde está conectado o nosso módulo bluetooth)  
+   
   lcd.begin (16,2);
 
-  noti_i = 0; // 0,1,2,3
-
+  noti_i = 0;
   noti_i_loop = 0; 
   momentoAtual    = millis();
   momentoAnterior = millis();
+
+  has_notification = false;
 }
 
  
 void loop (){
-
-  boolean has_notification = false;
-  for (int i=0; i<4; i++){
-     if (notificacoes[i].has_notification == true){
-        has_notification=true;
-        break;
-     }
-  }
-
   if (digitalRead(TOUCH_SENSOR) && has_notification){
     for (int i=0; i<4; i++){
       notificacoes[i].has_notification=false;
+      notificacoes[i].str[0]='\0';
     }
 
     has_notification = false;
@@ -129,10 +124,10 @@ void loop (){
     //Lendo str
     if (readState == 0){
       if (c == ';'){
-        noti_temp.r=0;
-        noti_temp.g=0;
-        noti_temp.b=0;
-        readState = 1;
+        noti_temp.r = 0;
+        noti_temp.g = 0;
+        noti_temp.b = 0;
+        readState   = 1;
       }else if (str_i < 10){
         noti_temp.str[str_i] = c;
         noti_temp.str[str_i+1] = '\0';
@@ -162,26 +157,19 @@ void loop (){
   }
 
   if (readState == 4){
-    Serial.println(notificacoes[noti_i].str);
-    Serial.println(notificacoes[noti_i].r);
-    Serial.println(notificacoes[noti_i].g);
-    Serial.println(notificacoes[noti_i].b);
-
-   
-    //Já existe com o mesmo nome?
-
-    boolean already_exists = false;
+    
     int i;
+    boolean noti_already_exists = false;
+
     for (i=0; i<4; i++){
-      
       if ( strcmp(  (notificacoes[i].str), (noti_temp.str) ) == 0){
-        already_exists = true;
+        noti_already_exists = true;
         break;
       }
     }
 
     int insert;
-    if (already_exists){
+    if (noti_already_exists){
       insert = i;
       notificacoes[insert].cont += 1;
     }else{
@@ -199,6 +187,7 @@ void loop (){
     notificacoes[insert].b = noti_temp.b;
     
     notificacoes[insert].has_notification = true;
+    has_notification = true;
     
     str_i = 0;
     readState = 0;
