@@ -39,9 +39,12 @@ unsigned long debounceDelay = 25;
 
 
 void setup() {
-  pinMode(ledPin, OUTPUT);
-  pinMode(desPin, INPUT);
-  pinMode(accPin, INPUT);
+  //pinMode(ledPin, OUTPUT);
+  //pinMode(desPin, INPUT);
+  //pinMode(accPin, INPUT);
+  DDRB |= 1<<5; //PB5 = 1
+  DDRD &= ~(1 << 2); //PD2 = 0
+  DDRD &= ~(1 << 4); //PD4 = 0
 
   ledPreviusMillis = millis();
   
@@ -50,7 +53,8 @@ void setup() {
 
 void loop() {
   // deceleration button
-  desReading = digitalRead(desPin);
+  //desReading = digitalRead(desPin);
+  desReading = PIND & (1 << 2);
 
   if (desReading != desLastState)
     desLastDebounceTime = millis();
@@ -87,7 +91,8 @@ void loop() {
 
   
   // acceleration button 
-  accReading = digitalRead(accPin);
+  //accReading = digitalRead(accPin);
+  accReading = PIND & (1 << 4);
 
   if (accReading != accLastState)
     accLastDebounceTime = millis();
@@ -139,7 +144,12 @@ void loop() {
   if (ledCurrentMillis - ledPreviusMillis > ledInterval){
     ledState = !ledState;
     
-    digitalWrite(LED_BUILTIN, ledState);
+    //digitalWrite(ledPin, ledState);
+    if (ledState)
+      PORTB |= 1 << 5;
+    else
+      PORTB &= ~(1 << 5);
+      
     ledPreviusMillis = ledCurrentMillis;
   }
   
