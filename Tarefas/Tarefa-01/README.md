@@ -10,7 +10,7 @@
 ## Circuito
 
 | Pino | |
-----------
+|------|-|
 | 2    | botão de aceleração (pull-down) |
 | 4    | botão de desaceleração (pull-down) |
 | 13   | led |
