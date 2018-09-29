@@ -118,7 +118,11 @@ void loop (){
     lcd.setCursor(0,0);
     lcd.print("Nenhuma");
     lcd.setCursor(0,1);
-    lcd.print("notificacao");    
+    lcd.print("notificacao");
+
+    analogWrite(LED_R, 0);
+    analogWrite(LED_G, 0);
+    analogWrite(LED_B, 0);
   }
 
   
