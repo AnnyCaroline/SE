@@ -54,11 +54,15 @@ LiquidCrystal_I2C lcd(0x27,2,1,0,4,5,6,7,3, POSITIVE);
 void setup() {
   Serial.begin(9600);
   
-  pinMode(LED_R,OUTPUT);
-  pinMode(LED_G,OUTPUT);
-  pinMode(LED_B,OUTPUT);
+  //pinMode(LED_R,OUTPUT);
+  //pinMode(LED_G,OUTPUT);
+  //pinMode(LED_B,OUTPUT);
+  DDRD |= 1 << 3;
+  DDRD |= 1 << 4;
+  DDRD |= 1 << 5;
 
-  pinMode(TOUCH_SENSOR, INPUT);
+  //pinMode(TOUCH_SENSOR, INPUT);
+  DDRB &= ~(1 << 4);
   
   analogWrite(LED_R, LOW);
   analogWrite(LED_G, LOW);
@@ -78,7 +82,10 @@ void setup() {
 
  
 void loop (){
-  if (digitalRead(TOUCH_SENSOR) && has_notification){
+  //int touchSensor = digitalRead(TOUCH_SENSOR);
+  int touchSensor = PINB & (1 << 4);
+  
+  if (touchSensor && has_notification){
     for (int i=0; i<4; i++){
       notificacoes[i].has_notification=false;
       notificacoes[i].str[0]='\0';
