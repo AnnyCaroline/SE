@@ -16,4 +16,5 @@
 * [x] 01 (piscar led + 2 botões) 23/09
 * [x] debounce da tarefa anterior 23/09
 * [x] 02 (aplicação qualquer com 2 sensores e dois atuadores) 30/09
-* [x] Acesso direto as portas GPIO (entrada e saída)
+* [ ] 03 (Conv. ou Comp. Analógico) 07/10
+* [ ] Apresentação das Tarefas-02/03 17/10
