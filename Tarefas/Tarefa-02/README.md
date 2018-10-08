@@ -12,6 +12,8 @@ Conforme requisitado no enunciado do trabalho, a aplicação faz acesso direto �
 |`pinMode(LED_B,OUTPUT);`| <code>DDRD &&#124;= 1 << 5;`</code>  | Análogo ao anterior |
 |`int touchSensor = digitalRead(TOUCH_SENSOR);`| `int touchSensor = PINB & (1 << 4);`| O sensor touch está conectado ao pino 4 da porta B. Para pinos de entrada, o valor ser lido fica armazenado no registrador PIN. Para ler a posição 4 do registrador, foi necessário setar os os bits das demais posições para 0.  ![](img/5linha.jpeg)|
 
+### LDR com comparador analógico 
+A aplicação faz uso de um sensor de luz (LDR) para definir a intensidade do LED.
 
 ### Links
 - https://www.macrumors.com/review/dotti-notti-iphone-controlled-smart-lights/

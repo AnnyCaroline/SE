@@ -6,14 +6,16 @@
 #define RX 9
 #define TX 10
 
-#define LED_R 3
-#define LED_G 4
-#define LED_B 5
-
 #define TOUCH_SENSOR 12
 
 #define MAX_NOTI 4
 #define NOTI_STR_LENGTH   10
+
+#define LED_R 3
+#define LED_G 5
+#define LED_B 11
+
+double led_intensity;
 
 struct noti{
   boolean has_notification = false;
@@ -35,9 +37,6 @@ int timeRange = 1000;
 
 int str_i = 0;
 char c;
-int r = 0;
-int g = 0;
-int b = 0;
 int readState = 0;
 /*
  * 0 - estou lendo a str
@@ -79,6 +78,8 @@ void setup() {
   momentoAnterior = millis();
 
   has_notification = false;
+
+  ACSR = 0; //habilita o conversor analógico
 }
 
  
@@ -106,10 +107,19 @@ void loop (){
       lcd.print(notificacoes[noti_i_loop].str);
       lcd.setCursor(0,1);
       lcd.print(notificacoes[noti_i_loop].cont);         
+
+      int value = ACSR & (1 << ACO);  
+      if (value){
+        led_intensity = 1;
+      }else{
+        led_intensity = 0.1;
+      }
+
+      Serial.println(led_intensity);
       
-      analogWrite(LED_R, notificacoes[noti_i_loop].r);
-      analogWrite(LED_G, notificacoes[noti_i_loop].g);
-      analogWrite(LED_B, notificacoes[noti_i_loop].b);
+      analogWrite(LED_R, led_intensity*notificacoes[noti_i_loop].r);
+      analogWrite(LED_G, led_intensity*notificacoes[noti_i_loop].g);
+      analogWrite(LED_B, led_intensity*notificacoes[noti_i_loop].b);
           
       momentoAnterior = momentoAtual;
       noti_i_loop = (noti_i_loop+1)%4;
@@ -121,9 +131,9 @@ void loop (){
     lcd.setCursor(0,1);
     lcd.print("notificacao");
 
-    analogWrite(LED_R, 0);
-    analogWrite(LED_G, 0);
-    analogWrite(LED_B, 0);
+    analogWrite(LED_R, LOW);
+    analogWrite(LED_G, LOW);
+    analogWrite(LED_B, LOW);
   }
 
   
