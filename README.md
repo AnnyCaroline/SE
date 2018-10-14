@@ -12,9 +12,10 @@
 - Tratameto de Interrupções
 
 ## Tarefas
-* [x] 00 (grupo + repositório + texto markdown)
-* [x] 01 (piscar led + 2 botões) 23/09
-* [x] debounce da tarefa anterior 23/09
-* [x] 02 (aplicação qualquer com 2 sensores e dois atuadores) 30/09
-* [ ] 03 (Conv. ou Comp. Analógico) 07/10
-* [ ] Apresentação das Tarefas-02/03 17/10
+* [x] 00 **16/09** grupo + repositório + texto markdown
+* [x] 01 **23/09** piscar led + 2 botões
+* [x] 01 **23/09** debounce da tarefa anterior
+* [x] 02 **30/09** aplicação qualquer com 2 sensores e dois atuadores
+* [x] 03 **07/10** Conv. ou Comp. Analógico
+* [ ] 04 **17/10** Apresentação das Tarefas-02/03/05
+* [ ] 05 **17/10** Timers
